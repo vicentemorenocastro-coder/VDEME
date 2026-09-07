@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VDEME Noticias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --papel:#FBF7F0;
+    --tinta:#1B1B18;
+    --rojo:#C4291B;
+    --linea:#D8D0C2;
+    --gris:#6E6A61;
+    --crema:#F1E8D8;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--papel);
+    color:var(--tinta);
+    font-family:'Inter', sans-serif;
+    line-height:1.5;
+  }
+  h1,h2,h3,.titular{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    line-height:1.08;
+  }
+  a{ color:inherit; text-decoration:none; }
+  img{ display:block; width:100%; height:100%; object-fit:cover; }
+
+  /* ---- Barra superior de fecha ---- */
+  .barra-fecha{
+    border-bottom:1px solid var(--linea);
+    padding:8px 5vw;
+    display:flex;
+    justify-content:space-between;
+    font-size:0.78rem;
+    color:var(--gris);
+    letter-spacing:0.02em;
+  }
+
+  /* ---- Cabecera / masthead ---- */
+  .cabecera{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:22px 5vw 18px;
+    border-bottom:3px solid var(--tinta);
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .logo-caja{
+    width:210px;
+    height:64px;
+    border:1.5px dashed var(--rojo);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--rojo);
+    font-family:'Inter', sans-serif;
+    font-size:0.72rem;
+    text-align:center;
+    flex-shrink:0;
+  }
+  nav.menu{
+    display:flex;
+    gap:28px;
+    font-size:0.92rem;
+    font-weight:500;
+  }
+  nav.menu a{ padding:4px 0; border-bottom:2px solid transparent; }
+  nav.menu a:hover{ border-color:var(--rojo); }
+
+  /* ---- Cintillo última hora ---- */
+  .ultima-hora{
+    background:var(--tinta);
+    color:var(--papel);
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    white-space:nowrap;
+  }
+  .ultima-hora .etiqueta{
+    background:var(--rojo);
+    padding:9px 16px;
+    font-weight:700;
+    font-size:0.78rem;
+    flex-shrink:0;
+  }
+  .ultima-hora .pista{
+    display:flex;
+    width:max-content;
+    animation: desplazar 28s linear infinite;
+  }
+  .ultima-hora .texto{
+    padding:9px 40px 9px 16px;
+    font-size:0.85rem;
+    white-space:nowrap;
+  }
+  @keyframes desplazar{
+    0%{ transform:translateX(0); }
+    100%{ transform:translateX(-50%); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ultima-hora .pista{ animation:none; }
+  }
+
+  /* ---- Portada: historia principal + secundarias ---- */
+  .portada{
+    display:grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap:40px;
+    padding:36px 5vw;
+    border-bottom:1px solid var(--linea);
+  }
+  .historia-principal .foto{
+    aspect-ratio:16/10;
+    background:var(--crema);
+    border:1.5px dashed var(--gris);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gris);
+    font-size:0.85rem;
+    margin-bottom:16px;
+  }
+  .categoria{
+    color:var(--rojo);
+    font-weight:600;
+    font-size:0.8rem;
+    display:block;
+    margin-bottom:8px;
+  }
+  .historia-principal h1{
+    font-size:2.6rem;
+    max-width:22ch;
+    margin-bottom:14px;
+  }
+  .historia-principal p.bajada{
+    max-width:60ch;
+    color:#3B3833;
+    font-size:1.02rem;
+  }
+  .meta{
+    color:var(--gris);
+    font-size:0.8rem;
+    margin-top:12px;
+  }
+
+  .lista-secundaria{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+  }
+  .nota-lateral{
+    display:grid;
+    grid-template-columns: 96px 1fr;
+    gap:14px;
+    padding-bottom:20px;
+    border-bottom:1px solid var(--linea);
+  }
+  .nota-lateral:last-child{ border-bottom:none; padding-bottom:0; }
+  .miniatura{
+    width:96px;
+    height:96px;
+    background:var(--crema);
+    border:1.5px dashed var(--gris);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gris);
+    font-size:0.62rem;
+    text-align:center;
+  }
+  .nota-lateral h3{
+    font-size:1.05rem;
+    margin-bottom:6px;
+  }
+
+  /* ---- Cuadrícula de secciones ---- */
+  .seccion{
+    padding:40px 5vw;
+    border-bottom:1px solid var(--linea);
+  }
+  .seccion-titulo{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:24px;
+  }
+  .seccion-titulo h2{
+    font-size:1.7rem;
+    color:var(--rojo);
+  }
+  .seccion-titulo .raya{
+    flex:1;
+    height:1px;
+    background:var(--linea);
+  }
+  .cuadricula{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:28px;
+  }
+  .tarjeta .foto{
+    aspect-ratio:4/3;
+    background:var(--crema);
+    border:1.5px dashed var(--gris);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gris);
+    font-size:0.75rem;
+    margin-bottom:12px;
+  }
+  .tarjeta h3{ font-size:1.15rem; margin-bottom:8px; }
+  .tarjeta p{ color:#3B3833; font-size:0.92rem; }
+
+  /* ---- Franja de opinión / columnistas ---- */
+  .columnistas{
+    background:var(--crema);
+    padding:40px 5vw;
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:26px;
+  }
+  .columnista{ text-align:center; }
+  .avatar{
+    width:88px;
+    height:88px;
+    border-radius:50%;
+    background:var(--papel);
+    border:1.5px dashed var(--gris);
+    margin:0 auto 10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gris);
+    font-size:0.6rem;
+  }
+  .columnista h3{ font-size:0.98rem; }
+  .columnista span{ color:var(--gris); font-size:0.78rem; }
+
+  /* ---- Pie de página ---- */
+  footer{
+    padding:30px 5vw 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:20px;
+  }
+  .logo-caja-pie{
+    width:150px;
+    height:46px;
+    border:1.5px dashed var(--rojo);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--rojo);
+    font-size:0.65rem;
+  }
+  footer p{ color:var(--gris); font-size:0.8rem; }
+
+  @media (max-width:860px){
+    .portada{ grid-template-columns:1fr; }
+    .cuadricula{ grid-template-columns:1fr 1fr; }
+    .columnistas{ grid-template-columns:1fr 1fr; }
+    nav.menu{ gap:16px; font-size:0.85rem; flex-wrap:wrap; }
+  }
+  @media (max-width:520px){
+    .cuadricula{ grid-template-columns:1fr; }
+    .columnistas{ grid-template-columns:1fr; }
+    .historia-principal h1{ font-size:1.9rem; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="barra-fecha">
+    <span>Lunes 7 de septiembre de 2026</span>
+    <span>Machalí, Chile · 17°C</span>
+  </div>
+
+  <header class="cabecera">
+    <!-- ESPACIO PARA EL LOGO: reemplazar este div por <img src="ruta-del-logo.png" alt="VDEME Noticias"> -->
+    <div class="logo-caja">LOGO VDEME NOTICIAS</div>
+    <nav class="menu">
+      <a href="#">Portada</a>
+      <a href="#">Política</a>
+      <a href="#">Economía</a>
+      <a href="#">Mundo</a>
+      <a href="#">Deportes</a>
+      <a href="#">Cultura</a>
+      <a href="#">Opinión</a>
+    </nav>
+  </header>
+
+  <div class="ultima-hora">
+    <span class="etiqueta">ÚLTIMA HORA</span>
+    <div class="pista">
+      <span class="texto">Estudiantes del Colegio Nahuelcura debaten sobre el avance de la inteligencia artificial · Municipalidad de Machalí anuncia mejoras en el centro cívico · Selección se prepara para las eliminatorias</span>
+      <span class="texto">Estudiantes del Colegio Nahuelcura debaten sobre el avance de la inteligencia artificial · Municipalidad de Machalí anuncia mejoras en el centro cívico · Selección se prepara para las eliminatorias</span>
+    </div>
+  </div>
+
+  <section class="portada">
+    <article class="historia-principal">
+      <div class="foto">
+        <!-- IMAGEN PRINCIPAL DE PORTADA -->
+        <img src="https://picsum.photos/seed/nahuelcura-ia/900/560" alt="Estudiantes del Colegio Nahuelcura conversando sobre inteligencia artificial">
+      </div>
+      <span class="categoria">Educación</span>
+      <h1>Alumnos del Colegio Nahuelcura hablan sobre el avance de la inteligencia artificial</h1>
+      <p class="bajada">El establecimiento de Machalí realizó una encuesta a estudiantes y profesores sobre el uso de la IA en la sala de clases: mientras los alumnos destacan que facilita las tareas, los docentes piden regular su uso para no reemplazar el aprendizaje.</p>
+      <p class="meta">Por Redacción VDEME · Machalí · Hace 12 minutos</p>
+    </article>
+
+    <aside class="lista-secundaria">
+      <div class="nota-lateral">
+        <div class="miniatura">
+          <img src="https://picsum.photos/seed/economia-machali/200/200" alt="Miniatura noticia economía">
+        </div>
+        <div>
+          <span class="categoria">Economía</span>
+          <h3>Dólar cierra la jornada con leve alza tras datos de empleo</h3>
+          <p class="meta">Hace 40 minutos</p>
+        </div>
+      </div>
+      <div class="nota-lateral">
+        <div class="miniatura">
+          <img src="https://picsum.photos/seed/bmw-carabineros/200/200" alt="Miniatura noticia BMW para Carabineros">
+        </div>
+        <div>
+          <span class="categoria">Nacional</span>
+          <h3>Carabineros adjudica la compra de 88 radiopatrullas BMW 320i</h3>
+          <p class="meta">Hace 1 hora</p>
+        </div>
+      </div>
+      <div class="nota-lateral">
+        <div class="miniatura">
+          <img src="https://picsum.photos/seed/deportes-machali/200/200" alt="Miniatura noticia deportes">
+        </div>
+        <div>
+          <span class="categoria">Deportes</span>
+          <h3>La selección nacional confirma nómina para las eliminatorias</h3>
+          <p class="meta">Hace 2 horas</p>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="seccion">
+    <div class="seccion-titulo">
+      <h2>Cultura</h2>
+      <div class="raya"></div>
+    </div>
+    <div class="cuadricula">
+      <article class="tarjeta">
+        <div class="foto">
+          <img src="https://picsum.photos/seed/cultura-cine/500/375" alt="Foto noticia cultura 1">
+        </div>
+        <h3>Festival de cine local reúne a más de 40 producciones nacionales</h3>
+        <p>La muestra se extenderá durante diez días en distintas salas de la ciudad.</p>
+      </article>
+      <article class="tarjeta">
+        <div class="foto">
+          <img src="https://picsum.photos/seed/cultura-biblioteca/500/375" alt="Foto noticia cultura 2">
+        </div>
+        <h3>Reabre la biblioteca municipal tras seis meses de restauración</h3>
+        <p>El edificio incorpora nuevas salas de lectura y un auditorio para actividades.</p>
+      </article>
+      <article class="tarjeta">
+        <div class="foto">
+          <img src="https://picsum.photos/seed/cultura-exposicion/500/375" alt="Foto noticia cultura 3">
+        </div>
+        <h3>Exposición itinerante llega este mes con obras de artistas emergentes</h3>
+        <p>La muestra podrá visitarse de forma gratuita hasta fin de mes.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="columnistas">
+    <div class="columnista">
+      <div class="avatar">
+        <img src="https://picsum.photos/seed/columnista-1/160/160" alt="Foto columnista 1" style="border-radius:50%;">
+      </div>
+      <h3>María Torres</h3>
+      <span>Columna de política</span>
+    </div>
+    <div class="columnista">
+      <div class="avatar">
+        <img src="https://picsum.photos/seed/columnista-2/160/160" alt="Foto columnista 2" style="border-radius:50%;">
+      </div>
+      <h3>Jorge Ibáñez</h3>
+      <span>Columna de economía</span>
+    </div>
+    <div class="columnista">
+      <div class="avatar">
+        <img src="https://picsum.photos/seed/columnista-3/160/160" alt="Foto columnista 3" style="border-radius:50%;">
+      </div>
+      <h3>Carla Rojas</h3>
+      <span>Columna de cultura</span>
+    </div>
+    <div class="columnista">
+      <div class="avatar">
+        <img src="https://picsum.photos/seed/columnista-4/160/160" alt="Foto columnista 4" style="border-radius:50%;">
+      </div>
+      <h3>Diego Fuentes</h3>
+      <span>Columna deportiva</span>
+    </div>
+  </section>
+
+  <footer>
+    <!-- ESPACIO PARA EL LOGO EN EL PIE DE PÁGINA -->
+    <div class="logo-caja-pie">LOGO VDEME</div>
+    <p>© 2026 VDEME Noticias · Todos los derechos reservados</p>
+  </footer>
+
+</body>
+</html>
